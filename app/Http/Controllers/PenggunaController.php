@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\pengguna;
 
 
 class PenggunaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $user = Pengguna::all();
         return view('pengguna.index', compact('user'));
+    }
+
+    // Api nya
+    public function indexApi()
+    {
+        $user = Pengguna::all();
+        return response()->json($user);
     }
 
     /**
@@ -48,6 +53,28 @@ class PenggunaController extends Controller
 
     }
 
+    // mencari berdasarkan id
+    public function showApi($id)
+    {
+        $user = Pengguna::find($id);
+        return response()->json($user);
+    }
+    public function storeApi(Request $request)
+    {
+        //
+        $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'nomor_telepon' => 'required',
+            'jenis_kendaraan'=> 'required',
+            'nomor_pelat'=> 'required',
+            'tanggal_masuk'=> 'required',
+            'tanggal_keluar'=> 'required',
+            'status_pembayaran'=> 'required'
+        ]);
+        $Pengguna = Pengguna::create($request->all());
+        return response()->json($Pengguna, 201);
+    }
     /**
      * Display the specified resource.
      */
